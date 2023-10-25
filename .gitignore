@@ -1,0 +1,14 @@
+.vscode/.alcache/*
+.vscode/.altemplates/*
+.vs/*
+.snapshots/*
+*.app
+.alpackages/*.app
+.vscode/rad.json
+.vscode/rad.json
+.alcache/*
+.altemplates/*
+*.xlf
+.vscode/*
+twp.json
+!.deppackages/*

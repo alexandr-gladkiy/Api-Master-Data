@@ -1,0 +1,32 @@
+{
+  "id": "2956ca36-8097-4e1f-af50-390af8dbd41e",
+  "name": "ApiMasterData",
+  "publisher": "Api master data",
+  "version": "1.0.0.0",
+  "brief": "Api master data app",
+  "description": "Api master data app",
+  "privacyStatement": "https://ApiMasterData.com",
+  "EULA": "https://ApiMasterData.com",
+  "help": "https://ApiMasterData.com",
+  "url": "https://ApiMasterData.com",
+  "logo": "Res/App.png",
+  "dependencies": [],
+  "screenshots": [],
+  "platform": "1.0.0.0",
+  "application": "23.0.0.0",
+  "idRanges": [
+    {
+      "from": 50000,
+      "to": 500200
+    }
+  ],
+  "resourceExposurePolicy": {
+    "allowDebugging": true,
+    "allowDownloadingSource": true,
+    "includeSourceInSymbolFile": true
+  },
+  "runtime": "12.0",
+  "features": [
+    "NoImplicitWith"
+  ]
+}
