@@ -55,7 +55,7 @@ table 50005 "API MD Structure Table Setup"
     }
     fieldgroups
     {
-        fieldgroup(DropDown; "Structure Code", "Entry No.", "Table No.", "Table Name")
+        fieldgroup(DropDown; "Table No.", "Table Name")
         {
 
         }

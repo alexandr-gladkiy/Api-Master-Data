@@ -20,10 +20,12 @@ page 50008 "API MD Data Structure Map LP"
                 field("Structure Code"; Rec."Structure Code")
                 {
                     ToolTip = 'Specifies the value of the Structure Code field.';
+                    Visible = false;
                 }
                 field("Node No."; Rec."Node No.")
                 {
                     ToolTip = 'Specifies the value of the Node No. field.';
+                    Visible = false;
                 }
                 field("Node Name"; Rec."Node Name")
                 {
