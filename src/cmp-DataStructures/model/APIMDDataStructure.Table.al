@@ -42,6 +42,10 @@ table 50003 "API MD Data Structure"
         {
             Clustered = true;
         }
+        key(Key1; "Structure Type", Code, Status)
+        {
+
+        }
     }
 
     fieldgroups

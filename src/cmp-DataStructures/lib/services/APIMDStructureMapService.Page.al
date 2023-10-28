@@ -21,7 +21,7 @@ codeunit 50009 "API MD Structure Map Service"
     /// <param name="StructureCode">Code[30].</param>
     /// <param name="NodeNo">Integer.</param>
     /// <returns>Return value of type Boolean.</returns>
-    procedure SetStructureMap(StructureCode: Code[30]; NodeNo: Integer): Boolean
+    procedure SetByPK(StructureCode: Code[30]; NodeNo: Integer): Boolean
     begin
         sCommon.TestEmpty(StructureCode, 'StructureCode');
         sCommon.TestEmpty(NodeNo, 'NodeNo');
@@ -60,31 +60,17 @@ codeunit 50009 "API MD Structure Map Service"
     /// <summary>
     /// Init.
     /// </summary>
-    /// <returns>Return value of type Boolean.</returns>
-    procedure Init(): Boolean
-    begin
-        GlobalStructureMap.Reset();
-        GlobalStructureMap.SetCurrentKey("Structure Code", "Node No.", Status);
-        if IsSetStructureCode then
-            GlobalStructureMap.SetRange("Structure Code", GlobalStructureCode);
-        if IsSetStatusFilter then
-            GlobalStructureMap.SetRange(Status, GlobalStatusFilter);
-        IsInit := not GlobalStructureMap.IsEmpty();
-        exit(IsInit);
-    end;
-    /// <summary>
-    /// CopyStructureMapToBuffer.
-    /// </summary>
     /// <param name="StructureMapBuffer">VAR Record "API MD Data Structure Map".</param>
-    procedure CopyStructureMapToBuffer(var StructureMapBuffer: Record "API MD Data Structure Map")
+    /// <returns>Return value of type Boolean.</returns>
+    procedure InitBuffer(var StructureMapBuffer: Record "API MD Data Structure Map"): Boolean
     begin
         sCommon.TestTemporaryRecord(StructureMapBuffer, 'StructureMapBuffer');
-
         StructureMapBuffer.Reset();
         StructureMapBuffer.DeleteAll(false);
 
-        if not IsInit then
-            exit;
+        ApplyFilters();
+        if GlobalStructureMap.IsEmpty then
+            exit(false);
 
         GlobalStructureMap.FindSet(false);
         repeat
@@ -93,4 +79,33 @@ codeunit 50009 "API MD Structure Map Service"
             StructureMapBuffer.Insert(false);
         until GlobalStructureMap.Next() = 0;
     end;
+
+    local procedure ApplyFilters()
+    begin
+        GlobalStructureMap.Reset();
+        GlobalStructureMap.SetCurrentKey("Structure Code", "Node No.", Status);
+        if IsSetStructureCode then
+            GlobalStructureMap.SetRange("Structure Code", GlobalStructureCode);
+        if IsSetStatusFilter then
+            GlobalStructureMap.SetRange(Status, GlobalStatusFilter);
+    end;
+
+    /// <summary>
+    /// LookupRecord.
+    /// </summary>
+    /// <param name="StructureMap">VAR Record "API MD Data Structure Map".</param>
+    /// <returns>Return value of type Boolean.</returns>
+    procedure LookupRecord(var StructureMap: Record "API MD Data Structure Map"): Boolean
+    var
+        StructureMapList: Page "API MD Data Structure Map List";
+    begin
+        StructureMapList.LookupMode(true);
+        StructureMapList.SetTableView(StructureMap);
+        if StructureMapList.RunModal() <> Action::LookupOK then
+            exit(false);
+
+        StructureMapList.GetRecord(StructureMap);
+        exit(true);
+    end;
+
 }

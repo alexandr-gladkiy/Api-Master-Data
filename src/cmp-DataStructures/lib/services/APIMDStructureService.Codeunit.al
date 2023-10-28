@@ -10,12 +10,19 @@ codeunit 50008 "API MD Structure Service"
         HasStructure: Boolean;
         ErrorStructureIsNotSetup: Label 'Structure is not initialized. Use SetStructure function first.';
 
+        GlobalStructureCode: Code[30];
+        IsSetStructureCode: Boolean;
+        GlobalStatusFilter: Enum "API MD Status";
+        IsSetStatusFilter: Boolean;
+        GlobalTypeFilter: Enum "API MD Data Structure Type";
+        IsSetTypeFilter: Boolean;
+
     /// <summary>
     /// SetStructure.
     /// </summary>
     /// <param name="StructureCode">Code[30].</param>
     /// <returns>Return value of type Boolean.</returns>
-    procedure SetStructure(StructureCode: Code[30]): Boolean
+    procedure SetByPK(StructureCode: Code[30]): Boolean
     begin
         if HasStructure and (GlobalStructure.Code = StructureCode) then
             exit(true);
@@ -80,5 +87,84 @@ codeunit 50008 "API MD Structure Service"
             Error(ErrorStructureIsNotSetup);
         GlobalStructure.CalcFields("Node Count");
         exit(GlobalStructure."Node Count");
+    end;
+    /// <summary>
+    /// LookupRecord.
+    /// </summary>
+    /// <param name="DataStructure">VAR Record "API MD Data Structure".</param>
+    /// <returns>Return value of type Boolean.</returns>
+    procedure LookupRecord(var DataStructure: Record "API MD Data Structure"): Boolean
+    var
+        DataStructureList: Page "API MD Data Structure List";
+    begin
+        DataStructureList.LookupMode(true);
+        DataStructureList.SetTableView(DataStructure);
+        if DataStructureList.RunModal() <> Action::LookupOK then
+            exit(false);
+
+        DataStructureList.GetRecord(DataStructure);
+    end;
+    /// <summary>
+    /// LookupStructureCode.
+    /// </summary>
+    /// <param name="StructureCode">VAR Code[30].</param>
+    /// <returns>Return value of type Boolean.</returns>
+    procedure LookupStructureCode(var StructureCode: Code[30]): Boolean
+    begin
+        ApplyFilters();
+        if not LookupRecord(GlobalStructure) then
+            exit(false);
+        StructureCode := GlobalStructure.Code;
+        exit(true);
+    end;
+    /// <summary>
+    /// SetStructureCode.
+    /// </summary>
+    /// <param name="StructureCode">Code[30].</param>
+    procedure SetStructureCode(StructureCode: Code[30])
+    begin
+        sCommon.TestEmpty(StructureCode, 'Structure Code');
+        GlobalStructureCode := StructureCode;
+        IsSetStructureCode := true;
+    end;
+    /// <summary>
+    /// SetStatusFilter.
+    /// </summary>
+    /// <param name="Status">Enum "API MD Status".</param>
+    procedure SetStatusFilter(Status: Enum "API MD Status")
+    begin
+        GlobalStatusFilter := Status;
+        IsSetStatusFilter := true;
+    end;
+    /// <summary>
+    /// SetTypeFilter.
+    /// </summary>
+    /// <param name="StructureType">Enum "API MD Data Structure Type".</param>
+    procedure SetTypeFilter(StructureType: Enum "API MD Data Structure Type")
+    begin
+        GlobalTypeFilter := StructureType;
+        IsSetTypeFilter := true;
+    end;
+
+    local procedure ApplyFilters()
+    begin
+        GlobalStructure.Reset;
+        GlobalStructure.SetCurrentKey("Structure Type", Code, Status);
+
+        if IsSetStructureCode then
+            GlobalStructure.SetRange(Code, GlobalStructureCode);
+        if IsSetTypeFilter then
+            GlobalStructure.SetRange("Structure Type", GlobalTypeFilter);
+        if IsSetStatusFilter then
+            GlobalStructure.SetRange(Status, GlobalStatusFilter);
+    end;
+
+    local procedure ApplyTypeFilter()
+    begin
+        if not IsSetTypeFilter then
+            exit;
+
+        GlobalStructure.SetCurrentKey("Structure Type", Code, Status);
+        GlobalStructure.SetRange("Structure Type", GlobalTypeFilter);
     end;
 }

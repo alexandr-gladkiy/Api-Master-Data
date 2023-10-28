@@ -61,4 +61,46 @@ codeunit 50002 "API MD Common Service"
         if not RecRef.IsTemporary() then
             Error(ErrorRecordMustBeTemporary, RecVarName)
     end;
+    /// <summary>
+    /// LookupTableID.
+    /// </summary>
+    /// <param name="NewObjectID">VAR Integer.</param>
+    /// <returns>Return value of type Boolean.</returns>
+    procedure LookupTableID(var NewObjectID: Integer): Boolean
+    var
+        AllObjWithCaption: Record AllObjWithCaption;
+        Objects: Page Objects;
+    begin
+        AllObjWithCaption.FilterGroup(2);
+        AllObjWithCaption.SetRange("Object Type", AllObjWithCaption."Object Type"::"Table");
+        AllObjWithCaption.FilterGroup(0);
+        Objects.SetRecord(AllObjWithCaption);
+        Objects.SetTableView(AllObjWithCaption);
+        Objects.LookupMode := true;
+        if Objects.RunModal() = Action::LookupOK then begin
+            Objects.GetRecord(AllObjWithCaption);
+            NewObjectID := AllObjWithCaption."Object ID";
+            exit(true);
+        end;
+    end;
+    /// <summary>
+    /// LookupFieldNo.
+    /// </summary>
+    /// <param name="TableNo">Integer.</param>
+    /// <param name="FieldNo">VAR Integer.</param>
+    /// <returns>Return value of type Boolean.</returns>
+    procedure LookupFieldNo(TableNo: Integer; var FieldNo: Integer): Boolean
+    var
+        RecField: Record Field;
+        FieldSelection: Codeunit "Field Selection";
+        RecRef: RecordRef;
+        FldRef: FieldRef;
+    begin
+        RecField.Reset();
+        RecField.SetRange(TableNo, TableNo);
+        if FieldSelection.Open(RecField) then begin
+            FieldNo := RecField."No.";
+            exit(true);
+        end;
+    end;
 }

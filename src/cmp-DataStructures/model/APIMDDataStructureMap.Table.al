@@ -30,7 +30,7 @@ table 50004 "API MD Data Structure Map"
             TableRelation = "API MD Data Structure Map"."Node No." where("Structure Code" = field("Structure Code"), Status = const(1));
             ValidateTableRelation = true;
         }
-        field(5; Status; Integer)
+        field(5; Status; Enum "API MD Status")
         {
             Caption = 'Status';
         }
@@ -43,8 +43,9 @@ table 50004 "API MD Data Structure Map"
         field(7; "Table No."; Integer)
         {
             Caption = 'Table No.';
-            TableRelation = AllObjWithCaption."Object ID" where("Object Type" = const(0));
-            ValidateTableRelation = true;
+            Editable = false;
+            FieldClass = FlowField;
+            CalcFormula = lookup("API MD Structure Table Setup"."Table No." where("Structure Code" = field("Structure Code"), "Entry No." = field("Table Setup Entry No.")));
         }
         field(8; "Field No."; Integer)
         {
@@ -65,7 +66,7 @@ table 50004 "API MD Data Structure Map"
             Caption = 'Parent Node Name';
             Editable = false;
             FieldClass = FlowField;
-            CalcFormula = lookup("API MD Data Structure Map"."Node Name" where("Node No." = field("Parent Node No.")));
+            CalcFormula = lookup("API MD Data Structure Map"."Node Name" where("Structure Code" = field("Structure Code")));
         }
         field(101; "Table Name"; Text[250])
         {
@@ -103,6 +104,7 @@ table 50004 "API MD Data Structure Map"
 
     var
         mDataStructure: Codeunit "API MD Structure Management";
+        sCommon: Codeunit "API MD Common Service";
 
     trigger OnInsert()
     var
