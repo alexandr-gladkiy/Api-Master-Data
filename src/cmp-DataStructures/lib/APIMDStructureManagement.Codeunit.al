@@ -5,6 +5,7 @@ codeunit 50007 "API MD Structure Management"
 {
     var
         sStructure: Codeunit "API MD Structure Service";
+        sStructureMap: Codeunit "API MD Structure Map Service";
         sStructureTableSetup: Codeunit "API MD Struct Tbl Set. Service";
         sStructureTableRelation: Codeunit "API MD Struct Tbl Rel Service";
     /// <summary>
@@ -42,10 +43,17 @@ codeunit 50007 "API MD Structure Management"
     /// <summary>
     /// ValidateTblDataStructureMapOnInsert.
     /// </summary>
-    /// <param name="DataStructureMap">Record "API MD Data Structure Map".</param>
-    procedure ValidateTblDataStructureMapOnInsert(DataStructureMap: Record "API MD Data Structure Map")
+    /// <param name="DataStructureMap">VAR Record "API MD Data Structure Map".</param>
+    procedure ValidateTblDataStructureMapOnInsert(var DataStructureMap: Record "API MD Data Structure Map")
     begin
+        SetStructureMapNodeNo(DataStructureMap);
+    end;
 
+    local procedure SetStructureMapNodeNo(var DataStructureMap: Record "API MD Data Structure Map")
+    begin
+        DataStructureMap.TestField("Structure Code");
+        sStructureMap.SetStructureCode(DataStructureMap."Structure Code");
+        DataStructureMap."Node No." := sStructureMap.GetLastNodeNo() + 1;
     end;
     /// <summary>
     /// ValidateTblDataStructureMapOnModify.

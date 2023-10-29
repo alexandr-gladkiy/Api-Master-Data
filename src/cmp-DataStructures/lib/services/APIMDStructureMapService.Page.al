@@ -8,12 +8,18 @@ codeunit 50009 "API MD Structure Map Service"
         mStructure: Codeunit "API MD Structure Management";
         GlobalStructureMap: Record "API MD Data Structure Map";
         HasStructureMap: Boolean;
+        IsInit: Boolean;
+        ErrorStructureMapIsNotSetUp: Label 'Structure Map is not initialized.';
+
         GlobalStructureCode: Code[30];
         IsSetStructureCode: Boolean;
+        ErrorStructureCodeIsNotSetUp: Label 'Structure Code is not set.';
         GlobalStatusFilter: Enum "API MD Status";
         IsSetStatusFilter: Boolean;
-        IsInit: Boolean;
-        ErrorStructureMapIsNotSetUp: Label 'Structure Map is not initialized. Use SetStructureMap function first.';
+        GlobalParentNodeNoFilter: Integer;
+        IsSetParentNodeNoFilter: Boolean;
+        ErrorParentNodeNoFilterIsNotSetUp: Label 'Parent Node No filter is not set.';
+
 
     /// <summary>
     /// SetStructureMap.
@@ -58,6 +64,39 @@ codeunit 50009 "API MD Structure Map Service"
         IsSetStatusFilter := true;
     end;
     /// <summary>
+    /// SetParentNodeNo.
+    /// </summary>
+    /// <param name="ParentNodeNo">Integer.</param>
+    procedure SetParentNodeNo(ParentNodeNo: Integer)
+    begin
+        GlobalParentNodeNoFilter := ParentNodeNo;
+        IsSetParentNodeNoFilter := true;
+    end;
+    /// <summary>
+    /// GetLastNodeNo.
+    /// </summary>
+    /// <returns>Return value of type Integer.</returns>
+    procedure GetLastNodeNo(): Integer
+    begin
+        if not IsSetStructureCode then
+            Error(ErrorStructureCodeIsNotSetUp);
+
+        if not GetSetOf(GlobalStructureMap) then
+            exit(0);
+        GlobalStructureMap.FindLast();
+        exit(GlobalStructureMap."Node No.");
+    end;
+    /// <summary>
+    /// GetSetOf.
+    /// </summary>
+    /// <param name="StructureMap">VAR Record "API MD Data Structure Map".</param>
+    /// <returns>Return value of type Boolean.</returns>
+    procedure GetSetOf(var StructureMap: Record "API MD Data Structure Map"): Boolean
+    begin
+        ApplyFilters(StructureMap);
+        exit(not StructureMap.IsEmpty());
+    end;
+    /// <summary>
     /// Init.
     /// </summary>
     /// <param name="StructureMapBuffer">VAR Record "API MD Data Structure Map".</param>
@@ -68,7 +107,7 @@ codeunit 50009 "API MD Structure Map Service"
         StructureMapBuffer.Reset();
         StructureMapBuffer.DeleteAll(false);
 
-        ApplyFilters();
+        ApplyFilters(GlobalStructureMap);
         if GlobalStructureMap.IsEmpty then
             exit(false);
 
@@ -80,14 +119,18 @@ codeunit 50009 "API MD Structure Map Service"
         until GlobalStructureMap.Next() = 0;
     end;
 
-    local procedure ApplyFilters()
+    local procedure ApplyFilters(var StructureMap: Record "API MD Data Structure Map")
     begin
-        GlobalStructureMap.Reset();
-        GlobalStructureMap.SetCurrentKey("Structure Code", "Node No.", Status);
+        StructureMap.Reset();
+        StructureMap.SetCurrentKey("Structure Code", "Node No.", Status);
         if IsSetStructureCode then
-            GlobalStructureMap.SetRange("Structure Code", GlobalStructureCode);
+            StructureMap.SetRange("Structure Code", GlobalStructureCode);
         if IsSetStatusFilter then
-            GlobalStructureMap.SetRange(Status, GlobalStatusFilter);
+            StructureMap.SetRange(Status, GlobalStatusFilter);
+        if IsSetParentNodeNoFilter then begin
+            StructureMap.SetCurrentKey("Structure Code", "Parent Node No.");
+            StructureMap.SetRange("Parent Node No.", GlobalParentNodeNoFilter);
+        end;
     end;
 
     /// <summary>
@@ -108,4 +151,38 @@ codeunit 50009 "API MD Structure Map Service"
         exit(true);
     end;
 
+    /// <summary>
+    /// UpdateIndentAndSorting.
+    /// </summary>
+    procedure UpdateIndentAndSorting()
+    var
+        SortingOrder: Integer;
+    begin
+        if not IsSetStructureCode then
+            Error(ErrorStructureCodeIsNotSetUp);
+
+        SortingOrder := 1;
+        SetIndentAndSorting(0, 0, SortingOrder);
+    end;
+
+    local procedure SetIndentAndSorting(ParentNodeNo: Integer; IndentLevel: Integer; var SortingOrder: Integer)
+    var
+        StructureMap: Record "API MD Data Structure Map";
+    begin
+        if not IsSetStructureCode then
+            Error(ErrorStructureCodeIsNotSetUp);
+
+        SetParentNodeNo(ParentNodeNo);
+        if not GetSetOf(StructureMap) then
+            exit;
+
+        StructureMap.FindSet(true);
+        repeat
+            StructureMap."Indent Level" := IndentLevel;
+            StructureMap."Sorting Order" := SortingOrder;
+            StructureMap.Modify(true);
+            SortingOrder += 1;
+            SetIndentAndSorting(StructureMap."Node No.", IndentLevel + 1, SortingOrder);
+        until StructureMap.Next() = 0;
+    end;
 }
