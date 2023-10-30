@@ -56,6 +56,10 @@ table 50005 "API MD Structure Table Setup"
         {
             Clustered = true;
         }
+        key(UK1; "Structure Code", "Base Table")
+        {
+            Unique = true;
+        }
     }
     fieldgroups
     {

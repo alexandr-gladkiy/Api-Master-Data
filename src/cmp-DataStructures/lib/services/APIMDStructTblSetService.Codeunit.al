@@ -4,11 +4,15 @@
 codeunit 50010 "API MD Struct Tbl Set. Service"
 {
     var
+        sCommon: Codeunit "API MD Common Service";
         GlobalStructureTableSetup: Record "API MD Structure Table Setup";
         HasStructureTableSetup: Boolean;
         ErrorStructureIsNotSetup: Label 'Structure is not initialized. Use SetStructureTableSetup function first.';
+
         GlobalStructureCode: Code[30];
         IsSetStructureCode: Boolean;
+        GlobalBaseTableFilter: Boolean;
+        IsSetBaseTableFilter: Boolean;
         ErrorStructureCodeIsNotSetup: Label 'Structure Code is not initialized. Use SetStructureCode function first.';
 
     /// <summary>
@@ -30,6 +34,16 @@ codeunit 50010 "API MD Struct Tbl Set. Service"
         exit(HasStructureTableSetup);
     end;
     /// <summary>
+    /// SetFirst.
+    /// </summary>
+    /// <returns>Return value of type Boolean.</returns>
+    procedure SetFirst(): Boolean
+    begin
+        ApplyFilters();
+        HasStructureTableSetup := GlobalStructureTableSetup.FindFirst();
+        exit(HasStructureTableSetup);
+    end;
+    /// <summary>
     /// SetStructureCode.
     /// </summary>
     /// <param name="StructureCode">Code[30].</param>
@@ -38,13 +52,24 @@ codeunit 50010 "API MD Struct Tbl Set. Service"
         GlobalStructureCode := StructureCode;
         IsSetStructureCode := true;
     end;
+    /// <summary>
+    /// SetBaseTableFilter.
+    /// </summary>
+    /// <param name="IsBaseTable">Boolean.</param>
+    procedure SetBaseTableFilter(IsBaseTable: Boolean)
+    begin
+        GlobalBaseTableFilter := IsBaseTable;
+        IsSetBaseTableFilter := true;
+    end;
 
     local procedure ApplyFilters()
     begin
         GlobalStructureTableSetup.Reset();
-        GlobalStructureTableSetup.SetCurrentKey("Structure Code", "Entry No.");
+        GlobalStructureTableSetup.SetCurrentKey("Structure Code", "Base Table");
         if IsSetStructureCode then
             GlobalStructureTableSetup.SetRange("Structure Code", GlobalStructureCode);
+        if IsSetBaseTableFilter then
+            GlobalStructureTableSetup.SetRange("Base Table", GlobalBaseTableFilter);
     end;
     /// <summary>
     /// GetLastEntryNo.
@@ -62,7 +87,28 @@ codeunit 50010 "API MD Struct Tbl Set. Service"
         GlobalStructureTableSetup.FindLast();
         exit(GlobalStructureTableSetup."Entry No.");
     end;
+    /// <summary>
+    /// InitBuffer.
+    /// </summary>
+    /// <param name="StructureTableSetupBuffer">VAR Record "API MD Structure Table Setup".</param>
+    procedure InitBuffer(var StructureTableSetupBuffer: Record "API MD Structure Table Setup")
+    begin
+        sCommon.TestTemporaryRecord(StructureTableSetupBuffer, 'StructureTableSetup');
 
+        StructureTableSetupBuffer.Reset();
+        StructureTableSetupBuffer.DeleteAll(false);
+
+        ApplyFilters();
+        if GlobalStructureTableSetup.IsEmpty() then
+            exit;
+
+        GlobalStructureTableSetup.FindSet(false);
+        repeat
+            StructureTableSetupBuffer.Init();
+            StructureTableSetupBuffer.TransferFields(GlobalStructureTableSetup, true);
+            StructureTableSetupBuffer.Insert(false);
+        until GlobalStructureTableSetup.Next() = 0;
+    end;
     /// <summary>
     /// LookupRecord.
     /// </summary>

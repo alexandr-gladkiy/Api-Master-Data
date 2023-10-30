@@ -78,6 +78,17 @@ page 50006 "API MD Data Structure Card"
                 RunObject = Page "API MD Struct. Table Rel. List";
                 RunPageLink = "Structure Code" = field(Code);
             }
+            action("Structure Test Card")
+            {
+                Caption = 'Structure Test Card';
+                Image = TestDatabase;
+                trigger OnAction()
+                begin
+                    sStructure.OpenStructureTestCard(Rec);
+                end;
+            }
         }
     }
+    var
+        sStructure: Codeunit "API MD Structure Service";
 }

@@ -167,4 +167,15 @@ codeunit 50008 "API MD Structure Service"
         GlobalStructure.SetCurrentKey("Structure Type", Code, Status);
         GlobalStructure.SetRange("Structure Type", GlobalTypeFilter);
     end;
+    /// <summary>
+    /// OpenStructureTestCard.
+    /// </summary>
+    /// <param name="Structure">Record "API MD Data Structure".</param>
+    procedure OpenStructureTestCard(Structure: Record "API MD Data Structure")
+    var
+        StructureTestCard: Page "API MD Structure Test Card";
+    begin
+        StructureTestCard.SetStructureCode(Structure.Code);
+        StructureTestCard.Run();
+    end;
 }
