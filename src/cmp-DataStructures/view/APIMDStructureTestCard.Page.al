@@ -106,9 +106,10 @@ page 50012 "API MD Structure Test Card"
     var
         ErrorValueIsEmpty: Label '% is empty.';
         RecordIdList: List of [Text];
+        RecRef: RecordRef;
     begin
         sCommon.TestEmpty(GlobalRecordIdList, StrSubstNo(ErrorValueIsEmpty, 'GlobalRecordIdList'));
         RecordIdList := GlobalRecordIdList.Split('|');
-        sStructure.GenerateDataStructureAsTextByRecordIdListImpl(Rec."Structure Code", RecordIdList);
+        //sStructure.GenerateDataStructureAsTextByRecordIdListImpl(Rec."Structure Code", RecordIdList);
     end;
 }

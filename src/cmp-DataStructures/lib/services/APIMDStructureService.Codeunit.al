@@ -181,40 +181,44 @@ codeunit 50008 "API MD Structure Service"
         StructureTestCard.Run();
     end;
     /// <summary>
-    /// GenerateDataStructureAsTextByRecordIdList.
+    /// GenerateDataAsTextImpl.
     /// </summary>
     /// <param name="StructureCode">Code[20].</param>
-    /// <param name="RecordIdList">List of [Text].</param>
-    procedure GenerateDataStructureAsTextByRecordIdListImpl(StructureCode: Code[20]; RecordIdList: List of [Text])
+    /// <param name="RecRef">VAR RecordRef.</param>
+    /// <param name="DataAsText">VAR Text.</param>
+    procedure GenerateDataAsTextImpl(StructureCode: Code[20]; var RecRef: RecordRef; var DataAsText: Text)
     begin
-        StructureImplementationFactory(StructureCode).GenerateDataAsTextByRecordIdList(StructureCode, RecordIdList);
+        StructureImplementationFactory(StructureCode).GenerateDataAsText(StructureCode, RecRef, DataAsText);
     end;
     /// <summary>
-    /// GenerateDataStructureAsFileByRecordIdList.
+    /// GenerateDataAsFileImpl.
     /// </summary>
     /// <param name="StructureCode">Code[20].</param>
-    /// <param name="RecordIdList">List of [Text].</param>
-    procedure GenerateDataStructureAsFileByRecordIdListImpl(StructureCode: Code[20]; RecordIdList: List of [Text])
+    /// <param name="RecRef">VAR RecordRef.</param>
+    /// <param name="FileName">Text.</param>
+    procedure GenerateDataAsFileImpl(StructureCode: Code[20]; var RecRef: RecordRef; FileName: Text)
     begin
-        StructureImplementationFactory(StructureCode).GenerateDataAsFileByRecordIdList(StructureCode, RecordIdList);
+        StructureImplementationFactory(StructureCode).GenerateDataAsFile(StructureCode, RecRef, FileName);
     end;
     /// <summary>
-    /// GenerateDataStructureAsBlobByRecordIdList.
+    /// GenerateDataAsBlobImpl.
     /// </summary>
     /// <param name="StructureCode">Code[20].</param>
-    /// <param name="RecordIdList">List of [Text].</param>
-    procedure GenerateDataStructureAsBlobByRecordIdListImpl(StructureCode: Code[20]; RecordIdList: List of [Text])
+    /// <param name="RecRef">VAR RecordRef.</param>
+    /// <param name="TempBlob">VAR Codeunit "Temp Blob".</param>
+    procedure GenerateDataAsBlobImpl(StructureCode: Code[20]; var RecRef: RecordRef; var TempBlob: Codeunit "Temp Blob")
     begin
-        StructureImplementationFactory(StructureCode).GenerateDataAsBlobByRecordIdList(StructureCode, RecordIdList);
+        StructureImplementationFactory(StructureCode).GenerateDataAsBlob(StructureCode, RecRef, TempBlob);
     end;
     /// <summary>
-    /// GenerateDataStructureAsStreamByRecordIdList.
+    /// GenerateDataAsStreamImpl.
     /// </summary>
     /// <param name="StructureCode">Code[20].</param>
-    /// <param name="RecordIdList">List of [Text].</param>
-    procedure GenerateDataStructureAsStreamByRecordIdListImpl(StructureCode: Code[20]; RecordIdList: List of [Text])
+    /// <param name="RecRef">VAR RecordRef.</param>
+    /// <param name="IStream">VAR InStream.</param>
+    procedure GenerateDataAsStreamImpl(StructureCode: Code[20]; var RecRef: RecordRef; var IStream: InStream)
     begin
-        StructureImplementationFactory(StructureCode).GenerateDataAsBlobByRecordIdList(StructureCode, RecordIdList);
+        StructureImplementationFactory(StructureCode).GenerateDataAsStream(StructureCode, RecRef, IStream);
     end;
 
     local procedure StructureImplementationFactory(StructureCode: Code[30]): Interface "API MD IStructure"
