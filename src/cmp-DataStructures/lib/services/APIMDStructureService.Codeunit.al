@@ -17,6 +17,8 @@ codeunit 50008 "API MD Structure Service"
         GlobalTypeFilter: Enum "API MD Data Structure Type";
         IsSetTypeFilter: Boolean;
 
+        ErrorValueIsEmpty: Label '%1 is empty!';
+
     /// <summary>
     /// SetStructure.
     /// </summary>
@@ -177,5 +179,56 @@ codeunit 50008 "API MD Structure Service"
     begin
         StructureTestCard.SetStructureCode(Structure.Code);
         StructureTestCard.Run();
+    end;
+    /// <summary>
+    /// GenerateDataStructureAsTextByRecordIdList.
+    /// </summary>
+    /// <param name="StructureCode">Code[20].</param>
+    /// <param name="RecordIdList">List of [Text].</param>
+    procedure GenerateDataStructureAsTextByRecordIdListImpl(StructureCode: Code[20]; RecordIdList: List of [Text])
+    begin
+        StructureImplementationFactory(StructureCode).GenerateDataAsTextByRecordIdList(StructureCode, RecordIdList);
+    end;
+    /// <summary>
+    /// GenerateDataStructureAsFileByRecordIdList.
+    /// </summary>
+    /// <param name="StructureCode">Code[20].</param>
+    /// <param name="RecordIdList">List of [Text].</param>
+    procedure GenerateDataStructureAsFileByRecordIdListImpl(StructureCode: Code[20]; RecordIdList: List of [Text])
+    begin
+        StructureImplementationFactory(StructureCode).GenerateDataAsFileByRecordIdList(StructureCode, RecordIdList);
+    end;
+    /// <summary>
+    /// GenerateDataStructureAsBlobByRecordIdList.
+    /// </summary>
+    /// <param name="StructureCode">Code[20].</param>
+    /// <param name="RecordIdList">List of [Text].</param>
+    procedure GenerateDataStructureAsBlobByRecordIdListImpl(StructureCode: Code[20]; RecordIdList: List of [Text])
+    begin
+        StructureImplementationFactory(StructureCode).GenerateDataAsBlobByRecordIdList(StructureCode, RecordIdList);
+    end;
+    /// <summary>
+    /// GenerateDataStructureAsStreamByRecordIdList.
+    /// </summary>
+    /// <param name="StructureCode">Code[20].</param>
+    /// <param name="RecordIdList">List of [Text].</param>
+    procedure GenerateDataStructureAsStreamByRecordIdListImpl(StructureCode: Code[20]; RecordIdList: List of [Text])
+    begin
+        StructureImplementationFactory(StructureCode).GenerateDataAsBlobByRecordIdList(StructureCode, RecordIdList);
+    end;
+
+    local procedure StructureImplementationFactory(StructureCode: Code[30]): Interface "API MD IStructure"
+    var
+        StructureTypeImpl: Enum "API MD Structure Type Impl.";
+    begin
+        sCommon.TestEmpty(StructureCode, StrSubstNo(ErrorValueIsEmpty, 'Structure Code'));
+        SetStructureCode(StructureCode);
+        ApplyFilters();
+        case GlobalStructure."Structure Type" of
+            GlobalStructure."Structure Type"::XML:
+                exit(StructureTypeImpl::XML);
+            GlobalStructure."Structure Type"::JSON:
+                exit(StructureTypeImpl::JSON);
+        end;
     end;
 }

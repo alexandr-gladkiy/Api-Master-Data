@@ -44,6 +44,21 @@ page 50012 "API MD Structure Test Card"
             }
         }
     }
+    actions
+    {
+        area(Processing)
+        {
+            action("Generate Data Structure")
+            {
+                Caption = 'Generate Data Structure';
+                Image = CreateDocument;
+                trigger OnAction()
+                begin
+                    CreateDataStructure();
+                end;
+            }
+        }
+    }
     var
         sCommon: Codeunit "API MD Common Service";
         sStructure: Codeunit "API MD Structure Service";
@@ -56,7 +71,6 @@ page 50012 "API MD Structure Test Card"
 
     trigger OnOpenPage()
     begin
-        //TODO: Use temporary record Structure Table Setup
         if not IsSetGlobalStructureCode then
             Error('Structure Code is not set. Use function SetStructureCode');
 
@@ -86,5 +100,15 @@ page 50012 "API MD Structure Test Card"
         if GlobalRecordIdList <> '' then
             GlobalRecordIdList += '|';
         GlobalRecordIdList += Format(RecRef.RecordId);
+    end;
+
+    local procedure CreateDataStructure()
+    var
+        ErrorValueIsEmpty: Label '% is empty.';
+        RecordIdList: List of [Text];
+    begin
+        sCommon.TestEmpty(GlobalRecordIdList, StrSubstNo(ErrorValueIsEmpty, 'GlobalRecordIdList'));
+        RecordIdList := GlobalRecordIdList.Split('|');
+        sStructure.GenerateDataStructureAsTextByRecordIdListImpl(Rec."Structure Code", RecordIdList);
     end;
 }
