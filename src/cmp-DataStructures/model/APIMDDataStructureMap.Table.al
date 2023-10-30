@@ -27,54 +27,69 @@ table 50004 "API MD Data Structure Map"
         field(4; "Parent Node No."; Integer)
         {
             Caption = 'Parent Node No.';
-            TableRelation = "API MD Data Structure Map"."Node No." where("Structure Code" = field("Structure Code"), Status = const(1));
+            TableRelation = "API MD Data Structure Map"."Node No." where("Structure Code" = field("Structure Code"));
             ValidateTableRelation = true;
         }
-        field(5; Status; Integer)
+        field(5; Status; Enum "API MD Status")
         {
             Caption = 'Status';
         }
-        field(6; "Table Setup Entry No."; Integer)
+        field(10; "Table Setup Entry No."; Integer)
         {
             Caption = 'Table Setup Entry No.';
             TableRelation = "API MD Structure Table Setup"."Entry No." where("Structure Code" = field("Structure Code"));
             ValidateTableRelation = true;
         }
-        field(7; "Table No."; Integer)
-        {
-            Caption = 'Table No.';
-            TableRelation = AllObjWithCaption."Object ID" where("Object Type" = const(0));
-            ValidateTableRelation = true;
-        }
-        field(8; "Field No."; Integer)
+        field(11; "Field No."; Integer)
         {
             Caption = 'Field No.';
             TableRelation = Field."No." where(TableNo = field("Table No."));
             ValidateTableRelation = true;
         }
-        field(9; "Field Validate"; Boolean)
+        field(12; "Default Value"; Text[1024])
+        {
+            Caption = 'Default Value';
+        }
+        field(20; "Field Validate"; Boolean)
         {
             Caption = 'Field Validate';
         }
-        field(10; Mondatory; Boolean)
+        field(21; Mondatory; Boolean)
         {
             Caption = 'Mondatory';
+        }
+        field(90; "Indent Level"; Integer)
+        {
+            Caption = 'Indent Level';
+            DataClassification = SystemMetadata;
+        }
+        field(91; "Sorting Order"; Integer)
+        {
+            Caption = 'Sorting Order';
+            DataClassification = SystemMetadata;
         }
         field(100; "Parent Node Name"; Text[50])
         {
             Caption = 'Parent Node Name';
             Editable = false;
             FieldClass = FlowField;
-            CalcFormula = lookup("API MD Data Structure Map"."Node Name" where("Node No." = field("Parent Node No.")));
+            CalcFormula = lookup("API MD Data Structure Map"."Node Name" where("Structure Code" = field("Structure Code"), "Node No." = field("Parent Node No.")));
         }
-        field(101; "Table Name"; Text[250])
+        field(101; "Table No."; Integer)
         {
-            Caption = 'Table Name';
+            Caption = 'Table No.';
+            Editable = false;
+            FieldClass = FlowField;
+            CalcFormula = lookup("API MD Structure Table Setup"."Table No." where("Structure Code" = field("Structure Code"), "Entry No." = field("Table Setup Entry No.")));
+        }
+        field(102; "Table Setup Name"; Text[250])
+        {
+            Caption = 'Table Setup Name';
             Editable = false;
             FieldClass = FlowField;
             CalcFormula = lookup(AllObjWithCaption."Object Caption" where("Object Type" = const(0), "Object ID" = field("Table No.")));
         }
-        field(102; "Field Name"; Text[250])
+        field(103; "Field Name"; Text[250])
         {
             Caption = 'Field Name';
             Editable = false;
@@ -92,6 +107,14 @@ table 50004 "API MD Data Structure Map"
         {
             Unique = true;
         }
+        key(Key1; "Structure Code", "Parent Node No.")
+        {
+
+        }
+        key(Key2; "Sorting Order")
+        {
+
+        }
     }
 
     fieldgroups
@@ -103,6 +126,7 @@ table 50004 "API MD Data Structure Map"
 
     var
         mDataStructure: Codeunit "API MD Structure Management";
+        sCommon: Codeunit "API MD Common Service";
 
     trigger OnInsert()
     var

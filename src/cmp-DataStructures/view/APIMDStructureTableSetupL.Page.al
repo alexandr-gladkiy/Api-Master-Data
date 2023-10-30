@@ -18,18 +18,29 @@ page 50009 "API MD Structure Table Setup L"
                 field("Structure Code"; Rec."Structure Code")
                 {
                     ToolTip = 'Specifies the value of the Structure Code field.';
+                    Visible = false;
                 }
                 field("Entry No."; Rec."Entry No.")
                 {
                     ToolTip = 'Specifies the value of the Entry No. field.';
+                    Visible = false;
                 }
                 field("Table No."; Rec."Table No.")
                 {
                     ToolTip = 'Specifies the value of the Table No. field.';
+                    Visible = false;
                 }
                 field("Table Name"; Rec."Table Name")
                 {
                     ToolTip = 'Specifies the value of the Table Name field.';
+                    trigger OnDrillDown()
+                    var
+                        NewTableID: Integer;
+                    begin
+                        if sCommon.LookupTableID(NewTableID) then
+                            Rec.Validate("Table No.", NewTableID);
+                        Rec.CalcFields("Table Name");
+                    end;
                 }
                 field("Base Table"; Rec."Base Table")
                 {
@@ -50,4 +61,6 @@ page 50009 "API MD Structure Table Setup L"
             }
         }
     }
+    var
+        sCommon: Codeunit "API MD Common Service";
 }

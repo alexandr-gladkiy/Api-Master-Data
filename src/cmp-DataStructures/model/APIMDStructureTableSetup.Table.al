@@ -13,6 +13,8 @@ table 50005 "API MD Structure Table Setup"
         field(1; "Structure Code"; Code[30])
         {
             Caption = 'Structure Code';
+            TableRelation = "API MD Data Structure".Code;
+            ValidateTableRelation = true;
         }
         field(2; "Entry No."; Integer)
         {
@@ -21,6 +23,8 @@ table 50005 "API MD Structure Table Setup"
         field(3; "Table No."; Integer)
         {
             Caption = 'Table No.';
+            TableRelation = AllObjWithCaption."Object ID" where("Object Type" = const(0));
+            ValidateTableRelation = true;
         }
         field(4; "Base Table"; Boolean)
         {
@@ -52,10 +56,14 @@ table 50005 "API MD Structure Table Setup"
         {
             Clustered = true;
         }
+        key(UK1; "Structure Code", "Base Table")
+        {
+            Unique = true;
+        }
     }
     fieldgroups
     {
-        fieldgroup(DropDown; "Structure Code", "Entry No.", "Table No.", "Table Name")
+        fieldgroup(DropDown; "Table No.", "Table Name")
         {
 
         }

@@ -45,7 +45,7 @@ page 50007 "API MD Data Structure Map List"
                 {
                     ToolTip = 'Specifies the value of the Table No. field.';
                 }
-                field("Table Name"; Rec."Table Name")
+                field("Table Name"; Rec."Table Setup Name")
                 {
                     ToolTip = 'Specifies the value of the Table Name field.';
                 }
