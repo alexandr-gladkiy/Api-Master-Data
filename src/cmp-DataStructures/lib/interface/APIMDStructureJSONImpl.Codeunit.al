@@ -3,45 +3,40 @@
 /// </summary>
 codeunit 50014 "API MD Structure JSON Impl." implements "API MD IStructure"
 {
-
     /// <summary>
-    /// GenerateDataAsTextByRecordIdList.
+    /// GenerateDataAsText.
     /// </summary>
     /// <param name="StructureCode">Code[30].</param>
-    /// <param name="RecordIdList">List of [Text].</param>
-    procedure GenerateDataAsTextByRecordIdList(StructureCode: Code[30]; RecordIdList: List of [Text])
-    var
-        RecordIdAsText: Text;
-        RecordId: RecordId;
-    begin
-        foreach RecordIdAsText in RecordIdList do begin
-            Evaluate(RecordId, RecordIdAsText);
-
-        end;
-    end;
-    /// <summary>
-    /// GenerateDataAsFileByRecordIdList.
-    /// </summary>
-    /// <param name="StructureCode">Code[30].</param>
-    /// <param name="RecordIdList">List of [Text].</param>
-    procedure GenerateDataAsFileByRecordIdList(StructureCode: Code[30]; RecordIdList: List of [Text])
+    /// <param name="RecRef">VAR RecordRef.</param>
+    /// <param name="DataAsText">VAR Text.</param>
+    procedure GenerateDataAsText(StructureCode: Code[30]; var RecRef: RecordRef; var DataAsText: Text)
     begin
     end;
     /// <summary>
-    /// GenerateDataAsBlobByRecordIdList.
+    /// GenerateDataAsFile.
     /// </summary>
     /// <param name="StructureCode">Code[30].</param>
-    /// <param name="RecordIdList">List of [Text].</param>
-    procedure GenerateDataAsBlobByRecordIdList(StructureCode: Code[30]; RecordIdList: List of [Text])
+    /// <param name="RecRef">VAR RecordRef.</param>
+    /// <param name="FileName">Text.</param>
+    procedure GenerateDataAsFile(StructureCode: Code[30]; var RecRef: RecordRef; FileName: Text)
     begin
     end;
     /// <summary>
-    /// GenerateDataAsStreamByRecordIdList.
+    /// GenerateDataAsBlob.
     /// </summary>
     /// <param name="StructureCode">Code[30].</param>
-    /// <param name="RecordIdList">List of [Text].</param>
-    procedure GenerateDataAsStreamByRecordIdList(StructureCode: Code[30]; RecordIdList: List of [Text])
+    /// <param name="RecRef">VAR RecordRef.</param>
+    /// <param name="TempBlob">VAR Codeunit "Temp Blob".</param>
+    procedure GenerateDataAsBlob(StructureCode: Code[30]; var RecRef: RecordRef; var TempBlob: Codeunit "Temp Blob")
     begin
     end;
-
+    /// <summary>
+    /// GenerateDataAsStream.
+    /// </summary>
+    /// <param name="StructureCode">Code[30].</param>
+    /// <param name="RecRef">VAR RecordRef.</param>
+    /// <param name="IStream">VAR InStream.</param>
+    procedure GenerateDataAsStream(StructureCode: Code[30]; var RecRef: RecordRef; var IStream: InStream)
+    begin
+    end;
 }
