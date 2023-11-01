@@ -95,7 +95,7 @@ page 50012 "API MD Structure Test Card"
         RecRefHelper: Codeunit "API MD Record Ref. Helper";
         RecRef: RecordRef;
     begin
-        if not RecRefHelper.LookupRecordRefByTableNo(RecRef, Rec."Table No.", '') then
+        if not RecRefHelper.LookupRecordRefByTableNo(RecRef, Rec."Table No.", FilterString) then
             exit;
 
         GlobalRecordId += Format(RecRef.RecordId);
