@@ -32,13 +32,21 @@ page 50012 "API MD Structure Test Card"
                     Caption = 'Base Table Name';
                     Editable = false;
                 }
-                field(RecordIdList; GlobalRecordIdList)
+                field("Record Id"; GlobalRecordId)
                 {
-                    Caption = 'Record ID List';
+                    Caption = 'Record ID';
                     Editable = true;
                     trigger OnDrillDown()
                     begin
                         LookupRecordId();
+                    end;
+                }
+                field("Filter Strint"; FilterString)
+                {
+                    Caption = 'Filter String';
+                    trigger OnDrillDown()
+                    begin
+                        //TODO: Create f-n generation filter string
                     end;
                 }
             }
@@ -48,15 +56,7 @@ page 50012 "API MD Structure Test Card"
     {
         area(Processing)
         {
-            action("Generate Data Structure")
-            {
-                Caption = 'Generate Data Structure';
-                Image = CreateDocument;
-                trigger OnAction()
-                begin
-                    CreateDataStructure();
-                end;
-            }
+
         }
     }
     var
@@ -66,7 +66,8 @@ page 50012 "API MD Structure Test Card"
         sStructureTableSetup: Codeunit "API MD Struct Tbl Set. Service";
         GlobalStructureCode: Code[30];
         IsSetGlobalStructureCode: Boolean;
-        GlobalRecordIdList: Text;
+        GlobalRecordId: Text;
+        FilterString: Text;
         ErrorStructureCodeIsEmpty: Label '%1 is empty';
 
     trigger OnOpenPage()
@@ -94,22 +95,16 @@ page 50012 "API MD Structure Test Card"
         RecRefHelper: Codeunit "API MD Record Ref. Helper";
         RecRef: RecordRef;
     begin
-        if not RecRefHelper.LookupRecordRefByTableNo(RecRef, Rec."Table No.", '') then
+        if not RecRefHelper.LookupRecordRefByTableNo(RecRef, Rec."Table No.", FilterString) then
             exit;
 
-        if GlobalRecordIdList <> '' then
-            GlobalRecordIdList += '|';
-        GlobalRecordIdList += Format(RecRef.RecordId);
+        GlobalRecordId += Format(RecRef.RecordId);
     end;
 
     local procedure CreateDataStructure()
     var
-        ErrorValueIsEmpty: Label '% is empty.';
-        RecordIdList: List of [Text];
-        RecRef: RecordRef;
+
     begin
-        sCommon.TestEmpty(GlobalRecordIdList, StrSubstNo(ErrorValueIsEmpty, 'GlobalRecordIdList'));
-        RecordIdList := GlobalRecordIdList.Split('|');
-        //sStructure.GenerateDataStructureAsTextByRecordIdListImpl(Rec."Structure Code", RecordIdList);
+        //TODO: Realisade f-n 
     end;
 }
