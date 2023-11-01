@@ -9,7 +9,7 @@ interface "API MD IStructure"
     /// <param name="StructureCode">Code[30].</param>
     /// <param name="RecRef">VAR RecordRef.</param>
     /// <param name="DataAsText">VAR Text.</param>
-    procedure GenerateDataAsText(StructureCode: Code[30]; var RecRef: RecordRef; var DataAsText: Text)
+    procedure ExportDataAsText(StructureCode: Code[30]; var RecRef: RecordRef; var DataAsText: Text)
 
     /// <summary>
     /// GenerateDataAsFile.
@@ -17,7 +17,7 @@ interface "API MD IStructure"
     /// <param name="StructureCode">Code[30].</param>
     /// <param name="RecRef">VAR RecordRef.</param>
     /// <param name="FileName">Text.</param>
-    procedure GenerateDataAsFile(StructureCode: Code[30]; var RecRef: RecordRef; FileName: Text);
+    procedure ExportDataAsFile(StructureCode: Code[30]; var RecRef: RecordRef; FileName: Text);
 
     /// <summary>
     /// GenerateDataAsBlob.
@@ -25,7 +25,7 @@ interface "API MD IStructure"
     /// <param name="StructureCode">Code[30].</param>
     /// <param name="RecRef">VAR RecordRef.</param>
     /// <param name="TempBlob">VAR Codeunit "Temp Blob".</param>
-    procedure GenerateDataAsBlob(StructureCode: Code[30]; var RecRef: RecordRef; var TempBlob: Codeunit "Temp Blob");
+    procedure ExportDataAsBlob(StructureCode: Code[30]; var RecRef: RecordRef; var TempBlob: Codeunit "Temp Blob");
 
     /// <summary>
     /// GenerateDataAsStream.
@@ -33,5 +33,5 @@ interface "API MD IStructure"
     /// <param name="StructureCode">Code[30].</param>
     /// <param name="RecRef">VAR RecordRef.</param>
     /// <param name="IStream">VAR InStream.</param>
-    procedure GenerateDataAsStream(StructureCode: Code[30]; var RecRef: RecordRef; var IStream: InStream);
+    procedure ExportDataAsStream(StructureCode: Code[30]; var RecRef: RecordRef; var IStream: InStream);
 }

@@ -4,39 +4,39 @@
 codeunit 50013 "API MD Structure XML Impl." implements "API MD IStructure"
 {
     /// <summary>
-    /// GenerateDataAsText.
+    /// ExportDataAsText.
     /// </summary>
     /// <param name="StructureCode">Code[30].</param>
     /// <param name="RecRef">VAR RecordRef.</param>
     /// <param name="DataAsText">VAR Text.</param>
-    procedure GenerateDataAsText(StructureCode: Code[30]; var RecRef: RecordRef; var DataAsText: Text)
+    procedure ExportDataAsText(StructureCode: Code[30]; var RecRef: RecordRef; var DataAsText: Text)
     begin
     end;
     /// <summary>
-    /// GenerateDataAsFile.
+    /// ExportDataAsFile.
     /// </summary>
     /// <param name="StructureCode">Code[30].</param>
     /// <param name="RecRef">VAR RecordRef.</param>
     /// <param name="FileName">Text.</param>
-    procedure GenerateDataAsFile(StructureCode: Code[30]; var RecRef: RecordRef; FileName: Text)
+    procedure ExportDataAsFile(StructureCode: Code[30]; var RecRef: RecordRef; FileName: Text)
     begin
     end;
     /// <summary>
-    /// GenerateDataAsBlob.
+    /// ExportDataAsBlob.
     /// </summary>
     /// <param name="StructureCode">Code[30].</param>
     /// <param name="RecRef">VAR RecordRef.</param>
     /// <param name="TempBlob">VAR Codeunit "Temp Blob".</param>
-    procedure GenerateDataAsBlob(StructureCode: Code[30]; var RecRef: RecordRef; var TempBlob: Codeunit "Temp Blob")
+    procedure ExportDataAsBlob(StructureCode: Code[30]; var RecRef: RecordRef; var TempBlob: Codeunit "Temp Blob")
     begin
     end;
     /// <summary>
-    /// GenerateDataAsStream.
+    /// ExportDataAsStream.
     /// </summary>
     /// <param name="StructureCode">Code[30].</param>
     /// <param name="RecRef">VAR RecordRef.</param>
     /// <param name="IStream">VAR InStream.</param>
-    procedure GenerateDataAsStream(StructureCode: Code[30]; var RecRef: RecordRef; var IStream: InStream)
+    procedure ExportDataAsStream(StructureCode: Code[30]; var RecRef: RecordRef; var IStream: InStream)
     begin
     end;
 }

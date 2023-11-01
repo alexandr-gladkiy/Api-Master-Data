@@ -186,9 +186,9 @@ codeunit 50008 "API MD Structure Service"
     /// <param name="StructureCode">Code[20].</param>
     /// <param name="RecRef">VAR RecordRef.</param>
     /// <param name="DataAsText">VAR Text.</param>
-    procedure GenerateDataAsTextImpl(StructureCode: Code[20]; var RecRef: RecordRef; var DataAsText: Text)
+    procedure ExportDataAsTextImpl(StructureCode: Code[20]; var RecRef: RecordRef; var DataAsText: Text)
     begin
-        StructureImplementationFactory(StructureCode).GenerateDataAsText(StructureCode, RecRef, DataAsText);
+        StructureImplementationFactory(StructureCode).ExportDataAsText(StructureCode, RecRef, DataAsText);
     end;
     /// <summary>
     /// GenerateDataAsFileImpl.
@@ -196,9 +196,9 @@ codeunit 50008 "API MD Structure Service"
     /// <param name="StructureCode">Code[20].</param>
     /// <param name="RecRef">VAR RecordRef.</param>
     /// <param name="FileName">Text.</param>
-    procedure GenerateDataAsFileImpl(StructureCode: Code[20]; var RecRef: RecordRef; FileName: Text)
+    procedure ExportDataAsFileImpl(StructureCode: Code[20]; var RecRef: RecordRef; FileName: Text)
     begin
-        StructureImplementationFactory(StructureCode).GenerateDataAsFile(StructureCode, RecRef, FileName);
+        StructureImplementationFactory(StructureCode).ExportDataAsFile(StructureCode, RecRef, FileName);
     end;
     /// <summary>
     /// GenerateDataAsBlobImpl.
@@ -206,9 +206,9 @@ codeunit 50008 "API MD Structure Service"
     /// <param name="StructureCode">Code[20].</param>
     /// <param name="RecRef">VAR RecordRef.</param>
     /// <param name="TempBlob">VAR Codeunit "Temp Blob".</param>
-    procedure GenerateDataAsBlobImpl(StructureCode: Code[20]; var RecRef: RecordRef; var TempBlob: Codeunit "Temp Blob")
+    procedure ExportDataAsBlobImpl(StructureCode: Code[20]; var RecRef: RecordRef; var TempBlob: Codeunit "Temp Blob")
     begin
-        StructureImplementationFactory(StructureCode).GenerateDataAsBlob(StructureCode, RecRef, TempBlob);
+        StructureImplementationFactory(StructureCode).ExportDataAsBlob(StructureCode, RecRef, TempBlob);
     end;
     /// <summary>
     /// GenerateDataAsStreamImpl.
@@ -216,9 +216,9 @@ codeunit 50008 "API MD Structure Service"
     /// <param name="StructureCode">Code[20].</param>
     /// <param name="RecRef">VAR RecordRef.</param>
     /// <param name="IStream">VAR InStream.</param>
-    procedure GenerateDataAsStreamImpl(StructureCode: Code[20]; var RecRef: RecordRef; var IStream: InStream)
+    procedure ExportDataAsStreamImpl(StructureCode: Code[20]; var RecRef: RecordRef; var IStream: InStream)
     begin
-        StructureImplementationFactory(StructureCode).GenerateDataAsStream(StructureCode, RecRef, IStream);
+        StructureImplementationFactory(StructureCode).ExportDataAsStream(StructureCode, RecRef, IStream);
     end;
 
     local procedure StructureImplementationFactory(StructureCode: Code[30]): Interface "API MD IStructure"
