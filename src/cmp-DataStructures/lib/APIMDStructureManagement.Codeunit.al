@@ -93,7 +93,6 @@ codeunit 50007 "API MD Structure Management"
     begin
         StructureTableSetup.TestField("Structure Code");
         sStructureTableSetup.SetStructureCode(StructureTableSetup."Structure Code");
-        StructureTableSetup."Entry No." := sStructureTableSetup.GetLastEntryNo() + 1;
     end;
     /// <summary>
     /// ValidateTblStructureTableSetupOnModify.

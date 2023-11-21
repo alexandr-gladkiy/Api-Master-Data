@@ -16,9 +16,9 @@ table 50005 "API MD Structure Table Setup"
             TableRelation = "API MD Data Structure".Code;
             ValidateTableRelation = true;
         }
-        field(2; "Entry No."; Integer)
+        field(2; "Table Code"; Code[30])
         {
-            Caption = 'Entry No.';
+            Caption = 'Table Code';
         }
         field(3; "Table No."; Integer)
         {
@@ -52,11 +52,11 @@ table 50005 "API MD Structure Table Setup"
     }
     keys
     {
-        key(PK; "Structure Code", "Entry No.")
+        key(PK; "Structure Code", "Table Code")
         {
             Clustered = true;
         }
-        key(UK1; "Structure Code", "Base Table")
+        key(UK1; "Structure Code", "Table No.", "Base Table")
         {
             Unique = true;
         }

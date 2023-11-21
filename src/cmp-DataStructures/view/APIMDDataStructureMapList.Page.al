@@ -37,7 +37,7 @@ page 50007 "API MD Data Structure Map List"
                 {
                     ToolTip = 'Specifies the value of the Parent Node Name field.';
                 }
-                field("Table Setup Entry No."; Rec."Table Setup Entry No.")
+                field("Table Setup Entry No."; Rec."Table Code")
                 {
                     ToolTip = 'Specifies the value of the Table Setup Entry No. field.';
                 }

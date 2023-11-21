@@ -34,12 +34,12 @@ page 50010 "API MD Struct. Table Rel. List"
                 {
                     ToolTip = 'Specifies the value of the Relation Value field.';
                 }
-                field("Source Entry No."; Rec."Source Entry No.")
+                field("Source Table Code"; Rec."Source Table Code")
                 {
                     ToolTip = 'Specifies the value of the Source Entry No. field.';
-                    Visible = false;
+                    //Visible = false;
                 }
-                field("Source Table No."; Rec."Source Table No.")
+                field("Source Table No."; Rec."Table No.")
                 {
                     ToolTip = 'Specifies the value of the Source Table No. field.';
                     Visible = false;
@@ -47,17 +47,18 @@ page 50010 "API MD Struct. Table Rel. List"
                 field("Source Table Name"; Rec."Source Table Name")
                 {
                     ToolTip = 'Specifies the value of the Source Table Name field.';
+                    Visible = false;
                     trigger OnDrillDown()
                     var
-                        NewEntryNo: Integer;
+                        NewTableCode: Code[30];
                     begin
                         sStructureTableSetup.SetStructureCode(Rec."Structure Code");
-                        if sStructureTableSetup.LookupEntryNo(NewEntryNo) then
-                            Rec.Validate("Source Entry No.", NewEntryNo);
-                        Rec.CalcFields("Source Table No.", "Source Table Name");
+                        if sStructureTableSetup.LookupEntryNo(NewTableCode) then
+                            Rec.Validate("Source Table Code", NewTableCode);
+                        Rec.CalcFields("Table No.", "Source Table Name");
                     end;
                 }
-                field("Source Field No."; Rec."Source Field No.")
+                field("Source Field No."; Rec."Field No.")
                 {
                     ToolTip = 'Specifies the value of the Source Field No. field.';
                     Visible = false;
@@ -69,17 +70,17 @@ page 50010 "API MD Struct. Table Rel. List"
                     var
                         NewFieldNo: Integer;
                     begin
-                        Rec.CalcFields("Source Table No.");
-                        Rec.TestField("Source Table No.");
-                        if sCommon.LookupFieldNo(Rec."Source Table No.", NewFieldNo) then
-                            Rec.Validate("Source Field No.", NewFieldNo);
+                        Rec.CalcFields("Table No.");
+                        Rec.TestField("Table No.");
+                        if sCommon.LookupFieldNo(Rec."Table No.", NewFieldNo) then
+                            Rec.Validate("Field No.", NewFieldNo);
                         Rec.CalcFields("Source Field Name");
                     end;
                 }
-                field("Relation Entry No."; Rec."Relation Entry No.")
+                field("Relation Table Code"; Rec."Relation Table Code")
                 {
-                    ToolTip = 'Specifies the value of the Relation Entry No. field.';
-                    Visible = false;
+                    ToolTip = 'Specifies the value of the Relation Table Code field.';
+                    //Visible = false;
                 }
                 field("Relation Table No."; Rec."Relation Table No.")
                 {
@@ -89,13 +90,14 @@ page 50010 "API MD Struct. Table Rel. List"
                 field("Relation Table Name"; Rec."Relation Table Name")
                 {
                     ToolTip = 'Specifies the value of the Relation Table Name field.';
+                    Visible = false;
                     trigger OnDrillDown()
                     var
-                        NewEntryNo: Integer;
+                        NewTableCode: Code[30];
                     begin
                         sStructureTableSetup.SetStructureCode(Rec."Structure Code");
-                        if sStructureTableSetup.LookupEntryNo(NewEntryNo) then
-                            Rec.Validate("Relation Entry No.", NewEntryNo);
+                        if sStructureTableSetup.LookupEntryNo(NewTableCode) then
+                            Rec.Validate("Relation Table Code", NewTableCode);
                         Rec.CalcFields("Relation Table No.", "Relation Table Name");
                     end;
                 }

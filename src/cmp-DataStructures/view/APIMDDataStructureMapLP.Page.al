@@ -49,7 +49,7 @@ page 50008 "API MD Data Structure Map LP"
                         LookupParentNodeNo();
                     end;
                 }
-                field("Table Setup Entry No."; Rec."Table Setup Entry No.")
+                field("Table Setup Entry No."; Rec."Table Code")
                 {
                     ToolTip = 'Specifies the value of the Table Setup Entry No. field.';
                     Visible = false;
@@ -64,12 +64,12 @@ page 50008 "API MD Data Structure Map LP"
                     ToolTip = 'Specifies the value of the Table Name field.';
                     trigger OnDrillDown()
                     var
-                        NewEntryNo: Integer;
+                        NewTableCode: Code[30];
                     begin
                         Rec.TestField("Structure Code");
                         sStructureMap.SetStructureCode(Rec."Structure Code");
-                        if sStructureTableSetup.LookupEntryNo(NewEntryNo) then
-                            Rec.Validate("Table Setup Entry No.", NewEntryNo);
+                        if sStructureTableSetup.LookupEntryNo(NewTableCode) then
+                            Rec.Validate("Table Code", NewTableCode);
                         Rec.CalcFields("Table No.", "Table Setup Name");
                     end;
                 }
@@ -139,9 +139,8 @@ page 50008 "API MD Data Structure Map LP"
                 Image = ClearFilter;
                 trigger OnAction()
                 begin
-                    Clear(Rec."Parent Node No.");
-                    Rec.CalcFields("Parent Node Name");
-                    CurrPage.Update(true);
+                    Rec.Rename(Rec."Structure Code", Rec."Node No.", 0);
+                    CurrPage.Update(false);
                 end;
             }
             action("Update Indent")

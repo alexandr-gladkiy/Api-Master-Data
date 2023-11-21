@@ -20,15 +20,14 @@ page 50009 "API MD Structure Table Setup L"
                     ToolTip = 'Specifies the value of the Structure Code field.';
                     Visible = false;
                 }
-                field("Entry No."; Rec."Entry No.")
+                field("Table Code"; Rec."Table Code")
                 {
-                    ToolTip = 'Specifies the value of the Entry No. field.';
-                    Visible = false;
+                    ToolTip = 'Specifies the value of the Table Code field.';
                 }
                 field("Table No."; Rec."Table No.")
                 {
                     ToolTip = 'Specifies the value of the Table No. field.';
-                    Visible = false;
+                    //Visible = false;
                 }
                 field("Table Name"; Rec."Table Name")
                 {
@@ -58,6 +57,19 @@ page 50009 "API MD Structure Table Setup L"
                 {
                     ToolTip = 'Specifies the value of the Trigger Delete field.';
                 }
+            }
+        }
+    }
+    actions
+    {
+        area(Navigation)
+        {
+            action("Table Relation")
+            {
+                Caption = 'Table Relation';
+                RunObject = Page "API MD Struct. Table Rel. List";
+                RunPageLink = "Structure Code" = field("Structure Code"), "Source Table Code" = field("Table Code");
+                RunPageMode = View;
             }
         }
     }
