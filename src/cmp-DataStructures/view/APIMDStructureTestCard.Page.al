@@ -56,7 +56,15 @@ page 50012 "API MD Structure Test Card"
     {
         area(Processing)
         {
-
+            action("Export Data")
+            {
+                Caption = 'Export Data';
+                Image = Export;
+                trigger OnAction()
+                begin
+                    CreateDataStructure();
+                end;
+            }
         }
     }
     var
@@ -98,13 +106,27 @@ page 50012 "API MD Structure Test Card"
         if not RecRefHelper.LookupRecordRefByTableNo(RecRef, Rec."Table No.", FilterString) then
             exit;
 
-        GlobalRecordId += Format(RecRef.RecordId);
+        GlobalRecordId := Format(RecRef.RecordId);
     end;
 
     local procedure CreateDataStructure()
     var
-
+        RecRef: RecordRef;
+        RecRefBuffer: RecordRef;
+        RecordID: RecordId;
+        KeyRef: KeyRef;
+        Data: Text;
     begin
-        //TODO: Realisade f-n 
+        if GlobalRecordId <> '' then begin
+            Evaluate(RecordID, GlobalRecordId);
+            RecRef.Get(RecordID);
+            RecRef.SetRecFilter();
+        end else begin
+            RecRef.Open(Rec."Table No.");
+            RecRef.SetView(FilterString);
+        end;
+
+        sStructure.ExportDataAsTextImpl(GlobalStructureCode, RecRef, Data);
+        Message(Data);
     end;
 }

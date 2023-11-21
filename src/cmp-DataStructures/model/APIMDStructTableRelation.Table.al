@@ -20,10 +20,10 @@ table 50006 "API MD Struct. Table Relation"
         {
             Caption = 'Line No.';
         }
-        field(3; "Relation Entry No."; Integer)
+        field(3; "Relation Table Code"; Code[30])
         {
-            Caption = 'Relation Entry No.';
-            TableRelation = "API MD Structure Table Setup"."Entry No." where("Structure Code" = field("Structure Code"));
+            Caption = 'Relation Table Code';
+            TableRelation = "API MD Structure Table Setup"."Table Code" where("Structure Code" = field("Structure Code"));
             ValidateTableRelation = true;
         }
         field(4; "Relation Table No."; Integer)
@@ -31,7 +31,7 @@ table 50006 "API MD Struct. Table Relation"
             Caption = 'Relation Table No.';
             Editable = false;
             FieldClass = FlowField;
-            CalcFormula = lookup("API MD Structure Table Setup"."Table No." where("Structure Code" = field("Structure Code"), "Entry No." = field("Relation Entry No.")));
+            CalcFormula = lookup("API MD Structure Table Setup"."Table No." where("Structure Code" = field("Structure Code"), "Table Code" = field("Relation Table Code")));
         }
         field(5; "Relation Field No."; Integer)
         {
@@ -47,23 +47,23 @@ table 50006 "API MD Struct. Table Relation"
         {
             Caption = 'Relation Value';
         }
-        field(8; "Source Entry No."; Integer)
+        field(8; "Source Table Code"; Code[30])
         {
-            Caption = 'Source Entry No.';
-            TableRelation = "API MD Structure Table Setup"."Entry No." where("Structure Code" = field("Structure Code"));
+            Caption = 'Source Table Code';
+            TableRelation = "API MD Structure Table Setup"."Table Code" where("Structure Code" = field("Structure Code"));
             ValidateTableRelation = true;
         }
-        field(9; "Source Table No."; Integer)
+        field(9; "Table No."; Integer)
         {
             Caption = 'Source Table No.';
             Editable = false;
             FieldClass = FlowField;
-            CalcFormula = lookup("API MD Structure Table Setup"."Table No." where("Structure Code" = field("Structure Code"), "Entry No." = field("Source Entry No.")));
+            CalcFormula = lookup("API MD Structure Table Setup"."Table No." where("Structure Code" = field("Structure Code"), "Table Code" = field("Source Table Code")));
         }
-        field(10; "Source Field No."; Integer)
+        field(10; "Field No."; Integer)
         {
             Caption = 'Source Field No.';
-            TableRelation = Field."No." where(TableNo = field("Source Table No."));
+            TableRelation = Field."No." where(TableNo = field("Table No."));
             ValidateTableRelation = true;
         }
         field(11; Status; Enum "API MD Status")
@@ -75,14 +75,14 @@ table 50006 "API MD Struct. Table Relation"
             Caption = 'Source Table Name';
             Editable = false;
             FieldClass = FlowField;
-            CalcFormula = lookup(AllObjWithCaption."Object Caption" where("Object Type" = const(0), "Object ID" = field("Source Table No.")));
+            CalcFormula = lookup(AllObjWithCaption."Object Caption" where("Object Type" = const(0), "Object ID" = field("Table No.")));
         }
         field(101; "Source Field Name"; Text[250])
         {
             Caption = 'Source Field Name';
             Editable = false;
             FieldClass = FlowField;
-            CalcFormula = lookup(Field."Field Caption" where(TableNo = field("Source Table No."), "No." = field("Source Field No.")));
+            CalcFormula = lookup(Field."Field Caption" where(TableNo = field("Table No."), "No." = field("Field No.")));
         }
         field(102; "Relation Table Name"; Text[250])
         {
@@ -96,7 +96,7 @@ table 50006 "API MD Struct. Table Relation"
             Caption = 'Relation Field Name';
             Editable = false;
             FieldClass = FlowField;
-            CalcFormula = lookup(Field."Field Caption" where(TableNo = field("Source Table No."), "No." = field("Relation Field No.")));
+            CalcFormula = lookup(Field."Field Caption" where(TableNo = field("Relation Table No."), "No." = field("Relation Field No.")));
         }
     }
     keys

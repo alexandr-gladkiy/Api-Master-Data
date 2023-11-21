@@ -64,10 +64,17 @@ codeunit 50009 "API MD Structure Map Service"
         IsSetStatusFilter := true;
     end;
     /// <summary>
-    /// SetParentNodeNo.
+    /// SetActiveStatusFilter.
+    /// </summary>
+    procedure SetActiveStatusFilter()
+    begin
+        SetStatusFilter(GlobalStatusFilter::Active);
+    end;
+    /// <summary>
+    /// SetParentNodeNoFilter.
     /// </summary>
     /// <param name="ParentNodeNo">Integer.</param>
-    procedure SetParentNodeNo(ParentNodeNo: Integer)
+    procedure SetParentNodeNoFilter(ParentNodeNo: Integer)
     begin
         GlobalParentNodeNoFilter := ParentNodeNo;
         IsSetParentNodeNoFilter := true;
@@ -96,6 +103,22 @@ codeunit 50009 "API MD Structure Map Service"
         ApplyFilters(StructureMap);
         exit(not StructureMap.IsEmpty());
     end;
+
+    /// <summary>
+    /// GetSetOfBufferByParentKey.
+    /// </summary>
+    /// <param name="StructureCode">Code[30].</param>
+    /// <param name="ParentNodeNo">Integer.</param>
+    /// <param name="StructureMapBuffer">VAR Record "API MD Data Structure Map".</param>
+    /// <returns>Return value of type Boolean.</returns>
+    procedure GetSetOfBufferByParentKey(StructureCode: Code[30]; ParentNodeNo: Integer; var StructureMapBuffer: Record "API MD Data Structure Map"): Boolean
+    begin
+        sCommon.TestTemporaryRecord(StructureMapBuffer, 'StructureMapBuffer');
+        StructureMapBuffer.Reset();
+        StructureMapBuffer.SetRange("Structure Code", StructureCode);
+        StructureMapBuffer.SetRange("Parent Node No.", ParentNodeNo);
+        exit(not StructureMapBuffer.IsEmpty())
+    end;
     /// <summary>
     /// Init.
     /// </summary>
@@ -117,6 +140,7 @@ codeunit 50009 "API MD Structure Map Service"
             StructureMapBuffer.TransferFields(GlobalStructureMap, true);
             StructureMapBuffer.Insert(false);
         until GlobalStructureMap.Next() = 0;
+        exit(true);
     end;
 
     local procedure ApplyFilters(var StructureMap: Record "API MD Data Structure Map")
@@ -172,7 +196,7 @@ codeunit 50009 "API MD Structure Map Service"
         if not IsSetStructureCode then
             Error(ErrorStructureCodeIsNotSetUp);
 
-        SetParentNodeNo(ParentNodeNo);
+        SetParentNodeNoFilter(ParentNodeNo);
         if not GetSetOf(StructureMap) then
             exit;
 

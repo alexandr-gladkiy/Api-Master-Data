@@ -50,7 +50,7 @@ page 50011 "API MD Structure Map Card"
                 group("Gen. Right")
                 {
                     ShowCaption = false;
-                    field("Table Setup Entry No."; Rec."Table Setup Entry No.")
+                    field("Table Setup Entry No."; Rec."Table Code")
                     {
                         ToolTip = 'Specifies the value of the Table Setup Entry No. field.';
                     }

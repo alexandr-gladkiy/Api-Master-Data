@@ -9,6 +9,12 @@ codeunit 50011 "API MD Struct Tbl Rel Service"
         ErrorStructureIsNotSetup: Label 'Structure Table Relation is not initialized';
         GlobalStructureCode: Code[30];
         IsSetStructureCode: Boolean;
+        GlobalRelationTableCodeFilter: Code[30];
+        IsSetRelationTableCodeFilter: Boolean;
+        GlobalSourceTableCodeFilter: Code[30];
+        IsSetSourceTableCodeFilter: Boolean;
+        GlobalStatus: Enum "API MD Status";
+        IsSetStatusFilter: Boolean;
         ErrorStructureCodeIsNotSetup: Label 'Structure Code is not initialized. Use SetStructureCode function first.';
 
     /// <summary>
@@ -38,13 +44,55 @@ codeunit 50011 "API MD Struct Tbl Rel Service"
         GlobalStructureCode := StructureCode;
         IsSetStructureCode := true;
     end;
-
-    local procedure ApplyFilters()
+    /// <summary>
+    /// SetTableCodeFilter.
+    /// </summary>
+    /// <param name="TableCode">Code[30].</param>
+    procedure SetSourceTableCodeFilter(TableCode: Code[30])
     begin
-        GlobalStructureTableRelation.Reset();
-        GlobalStructureTableRelation.SetCurrentKey("Structure Code", "Line No.");
+        GlobalSourceTableCodeFilter := TableCode;
+        IsSetSourceTableCodeFilter := true;
+    end;
+    /// <summary>
+    /// SetRelationTableCodeFilter.
+    /// </summary>
+    /// <param name="RelationTableCode">Integer.</param>
+    procedure SetRelationTableCodeFilter(RelationTableCode: Code[30])
+    begin
+        GlobalRelationTableCodeFilter := RelationTableCode;
+        IsSetRelationTableCodeFilter := true;
+    end;
+    /// <summary>
+    /// SetStatusActiveFilter.
+    /// </summary>
+    procedure SetStatusActiveFilter()
+    begin
+        GlobalStatus := GlobalStatus::Active;
+        IsSetStatusFilter := true;
+    end;
+
+    local procedure ApplyFilters(var StructureTableRelation: Record "API MD Struct. Table Relation")
+    begin
+        StructureTableRelation.Reset();
+        StructureTableRelation.SetCurrentKey("Structure Code", "Relation Table Code", Status);
         if IsSetStructureCode then
-            GlobalStructureTableRelation.SetRange("Structure Code", GlobalStructureCode);
+            StructureTableRelation.SetRange("Structure Code", GlobalStructureCode);
+        if IsSetRelationTableCodeFilter then
+            StructureTableRelation.SetRange("Relation Table Code", GlobalRelationTableCodeFilter);
+        if IsSetStatusFilter then
+            StructureTableRelation.SetRange("Status", GlobalStatus);
+        if IsSetSourceTableCodeFilter then
+            StructureTableRelation.SetRange("Source Table Code", GlobalSourceTableCodeFilter);
+    end;
+    /// <summary>
+    /// GetSetOf.
+    /// </summary>
+    /// <param name="StructureTableRelation">VAR Record "API MD Struct. Table Relation".</param>
+    /// <returns>Return value of type Boolean.</returns>
+    procedure GetSetOf(var StructureTableRelation: Record "API MD Struct. Table Relation"): Boolean
+    begin
+        ApplyFilters(StructureTableRelation);
+        exit(not StructureTableRelation.IsEmpty())
     end;
     /// <summary>
     /// GetLastLineNo.
@@ -55,7 +103,7 @@ codeunit 50011 "API MD Struct Tbl Rel Service"
         if not IsSetStructureCode then
             Error(ErrorStructureCodeIsNotSetup);
 
-        ApplyFilters();
+        ApplyFilters(GlobalStructureTableRelation);
         if GlobalStructureTableRelation.IsEmpty() then
             exit(0);
 

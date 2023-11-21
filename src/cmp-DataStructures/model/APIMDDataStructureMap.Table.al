@@ -34,10 +34,18 @@ table 50004 "API MD Data Structure Map"
         {
             Caption = 'Status';
         }
-        field(10; "Table Setup Entry No."; Integer)
+        field(6; "Data Type"; Enum "API MD Data Type")
         {
-            Caption = 'Table Setup Entry No.';
-            TableRelation = "API MD Structure Table Setup"."Entry No." where("Structure Code" = field("Structure Code"));
+            Caption = 'Data Type';
+        }
+        field(7; Value; Text[50])
+        {
+            Caption = 'Value';
+        }
+        field(10; "Table Code"; Code[30])
+        {
+            Caption = 'Table Code';
+            TableRelation = "API MD Structure Table Setup"."Table Code" where("Structure Code" = field("Structure Code"));
             ValidateTableRelation = true;
         }
         field(11; "Field No."; Integer)
@@ -80,7 +88,7 @@ table 50004 "API MD Data Structure Map"
             Caption = 'Table No.';
             Editable = false;
             FieldClass = FlowField;
-            CalcFormula = lookup("API MD Structure Table Setup"."Table No." where("Structure Code" = field("Structure Code"), "Entry No." = field("Table Setup Entry No.")));
+            CalcFormula = lookup("API MD Structure Table Setup"."Table No." where("Structure Code" = field("Structure Code"), "Table Code" = field("Table Code")));
         }
         field(102; "Table Setup Name"; Text[250])
         {
@@ -99,13 +107,9 @@ table 50004 "API MD Data Structure Map"
     }
     keys
     {
-        key(PK; "Structure Code", "Node No.")
+        key(PK; "Structure Code", "Node No.", "Parent Node No.")
         {
             Clustered = true;
-        }
-        key(UK; "Node No.", "Parent Node No.")
-        {
-            Unique = true;
         }
         key(Key1; "Structure Code", "Parent Node No.")
         {
