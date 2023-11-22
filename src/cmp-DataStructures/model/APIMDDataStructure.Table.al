@@ -24,7 +24,11 @@ table 50003 "API MD Data Structure"
         {
             Caption = 'Direction';
         }
-        field(5; Status; Enum "API MD Status")
+        field(5; "Endpoint Name"; Text[50])
+        {
+            Caption = 'Endpoint Name';
+        }
+        field(6; Status; Enum "API MD Status")
         {
             Caption = 'Status';
         }

@@ -1,0 +1,35 @@
+@BCLogin = admin
+@BCPassword = admin
+@Domain = bc-api-md-default:7048
+@Instance = bc
+@CompanyID = 610ca3d9-ab71-ee11-817c-6045bdc8c034
+
+### Get Companies list
+GET https://{{Domain}}/{{Instance}}/api/v2.0/companies
+Authorization: Basic {{BCLogin}}:{{BCPassword}}
+content-type: application/json
+
+### Get Data Endpoint
+GET https://{{Domain}}/{{Instance}}/api/public/md/v1.0/companies({{CompanyID}})/datasets?tenant=default&endpoint=dsg
+Authorization: Basic {{BCLogin}}:{{BCPassword}}
+content-type: application/json
+
+### Get Ping result
+POST https://bc-api-md-default:7048/BC/ODataV4/MasterData_Ping?company={{CompanyID}}
+Authorization: Basic {{BCLogin}}:{{BCPassword}}
+content-type: application/json
+
+{
+
+}
+
+### Get Data By endpoint
+POST https://bc-api-md-default:7048/BC/ODataV4/MasterData_GetData?company={{CompanyID}}
+Authorization: Basic {{BCLogin}}:{{BCPassword}}
+content-type: application/json
+
+{
+    "apiKey": "",
+    "endpoint": "orders",
+    "filters": ""
+}

@@ -40,6 +40,10 @@ page 50006 "API MD Data Structure Card"
                     {
                         ToolTip = 'Specifies the value of the Direction field.';
                     }
+                    field("Endpoint Name"; Rec."Endpoint Name")
+                    {
+                        ToolTip = 'Specifies the value of the Endpoint Name field.';
+                    }
                     field(Status; Rec.Status)
                     {
                         ToolTip = 'Specifies the value of the Status field.';
