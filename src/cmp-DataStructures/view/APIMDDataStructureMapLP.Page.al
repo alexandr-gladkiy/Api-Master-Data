@@ -68,7 +68,7 @@ page 50008 "API MD Data Structure Map LP"
                     begin
                         Rec.TestField("Structure Code");
                         sStructureMap.SetStructureCode(Rec."Structure Code");
-                        if sStructureTableSetup.LookupEntryNo(NewTableCode) then
+                        if sStructureTableSetup.LookupTableCode(NewTableCode) then
                             Rec.Validate("Table Code", NewTableCode);
                         Rec.CalcFields("Table No.", "Table Setup Name");
                     end;

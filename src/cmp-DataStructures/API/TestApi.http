@@ -10,18 +10,18 @@ Authorization: Basic {{BCLogin}}:{{BCPassword}}
 content-type: application/json
 
 ### Get Data Endpoint
-GET https://{{Domain}}/{{Instance}}/api/public/md/v1.0/companies({{CompanyID}})/datasets?tenant=default&endpoint=dsg
-Authorization: Basic {{BCLogin}}:{{BCPassword}}
-content-type: application/json
+# GET https://{{Domain}}/{{Instance}}/api/public/md/v1.0/companies({{CompanyID}})/datasets?tenant=default&endpoint=dsg
+# Authorization: Basic {{BCLogin}}:{{BCPassword}}
+# content-type: application/json
 
-### Get Ping result
-POST https://bc-api-md-default:7048/BC/ODataV4/MasterData_Ping?company={{CompanyID}}
-Authorization: Basic {{BCLogin}}:{{BCPassword}}
-content-type: application/json
+# ### Get Ping result
+# POST https://bc-api-md-default:7048/BC/ODataV4/MasterData_Ping?company={{CompanyID}}
+# Authorization: Basic {{BCLogin}}:{{BCPassword}}
+# content-type: application/json
 
-{
+# {
 
-}
+# }
 
 ### Get Data By endpoint
 POST https://bc-api-md-default:7048/BC/ODataV4/MasterData_GetData?company={{CompanyID}}
@@ -31,5 +31,5 @@ content-type: application/json
 {
     "apiKey": "",
     "endpoint": "orders",
-    "filters": ""
+    "filters": "{}"
 }

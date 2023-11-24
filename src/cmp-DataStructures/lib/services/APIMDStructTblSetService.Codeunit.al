@@ -56,7 +56,7 @@ codeunit 50010 "API MD Struct Tbl Set. Service"
     /// <returns>Return value of type Boolean.</returns>
     procedure SetFirst(): Boolean
     begin
-        ApplyFilters();
+        ApplyFilters(GlobalStructureTableSetup);
         HasStructureTableSetup := GlobalStructureTableSetup.FindFirst();
         exit(HasStructureTableSetup);
     end;
@@ -79,14 +79,14 @@ codeunit 50010 "API MD Struct Tbl Set. Service"
         IsSetBaseTableFilter := true;
     end;
 
-    local procedure ApplyFilters()
+    local procedure ApplyFilters(var StructureTableSetup: Record "API MD Structure Table Setup")
     begin
-        GlobalStructureTableSetup.Reset();
-        GlobalStructureTableSetup.SetCurrentKey("Structure Code", "Base Table");
+        StructureTableSetup.Reset();
+        StructureTableSetup.SetCurrentKey("Structure Code", "Base Table");
         if IsSetStructureCode then
-            GlobalStructureTableSetup.SetRange("Structure Code", GlobalStructureCode);
+            StructureTableSetup.SetRange("Structure Code", GlobalStructureCode);
         if IsSetBaseTableFilter then
-            GlobalStructureTableSetup.SetRange("Base Table", GlobalBaseTableFilter);
+            StructureTableSetup.SetRange("Base Table", GlobalBaseTableFilter);
     end;
     /// <summary>
     /// GetTableNo.
@@ -124,7 +124,7 @@ codeunit 50010 "API MD Struct Tbl Set. Service"
         StructureTableSetupBuffer.Reset();
         StructureTableSetupBuffer.DeleteAll(false);
 
-        ApplyFilters();
+        ApplyFilters(GlobalStructureTableSetup);
         if GlobalStructureTableSetup.IsEmpty() then
             exit;
 
@@ -146,7 +146,7 @@ codeunit 50010 "API MD Struct Tbl Set. Service"
             Error(ErrorStructureCodeIsNotSetup);
 
         SetBaseTableFilter(true);
-        ApplyFilters();
+        ApplyFilters(GlobalStructureTableSetup);
         GlobalStructureTableSetup.FindFirst();
         IsBase := GlobalStructureTableSetup."Table No." = TableNo;
         SetBaseTableFilter(false);
@@ -169,13 +169,13 @@ codeunit 50010 "API MD Struct Tbl Set. Service"
         exit(true);
     end;
     /// <summary>
-    /// LookupStructureCode.
+    /// LookupTableCode.
     /// </summary>
     /// <param name="TableCode">VAR Integer.</param>
     /// <returns>Return value of type Boolean.</returns>
-    procedure LookupEntryNo(var TableCode: Code[30]): Boolean
+    procedure LookupTableCode(var TableCode: Code[30]): Boolean
     begin
-        ApplyFilters();
+        ApplyFilters(GlobalStructureTableSetup);
         if not LookupRecord(GlobalStructureTableSetup) then
             exit(false);
         TableCode := GlobalStructureTableSetup."Table Code";

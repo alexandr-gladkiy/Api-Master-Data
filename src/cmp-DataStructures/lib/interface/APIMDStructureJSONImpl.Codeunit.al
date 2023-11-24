@@ -22,8 +22,11 @@ codeunit 50014 "API MD Structure JSON Impl." implements "API MD IStructure"
     /// <param name="RecRef">VAR RecordRef.</param>
     /// <param name="DataAsText">VAR Text.</param>
     procedure ExportDataAsText(StructureCode: Code[30]; var RecRef: RecordRef; var DataAsText: Text)
+    var
+        DataAsJson: JsonObject;
     begin
-        DataAsText := Format(CreateJsonByStructure(StructureCode, RecRef));
+        DataAsJson := CreateJsonByStructure(StructureCode, RecRef);
+        DataAsJson.WriteTo(DataAsText);
     end;
     /// <summary>
     /// ExportDataAsFile.
