@@ -44,7 +44,7 @@ table 50004 "API MD Data Structure Map"
         }
         field(10; "Table Code"; Code[30])
         {
-            Caption = 'Table Code';
+            Caption = 'Table Setup Code';
             TableRelation = "API MD Structure Table Setup"."Table Code" where("Structure Code" = field("Structure Code"));
             ValidateTableRelation = true;
         }

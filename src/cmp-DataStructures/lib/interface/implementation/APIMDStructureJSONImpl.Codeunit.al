@@ -134,7 +134,8 @@ codeunit 50014 "API MD Structure JSON Impl." implements "API MD IStructure"
                         RetvalJObject.Add(StructureMap."Node Name", JArray);
                     end else begin
                         JObject := GetJObject(LocalStructureMap, SourceRecRef);
-                        RetvalJObject.Add(StructureMap."Node Name", JObject);
+                        if JObject.Values.Count > 0 then
+                            RetvalJObject.Add(StructureMap."Node Name", JObject);
                     end;
                 end else begin
                     if RelationRecRef.Number > 0 then
@@ -154,21 +155,33 @@ codeunit 50014 "API MD Structure JSON Impl." implements "API MD IStructure"
         ValueBool: Boolean;
         ValueInt: Integer;
         ValueBigInt: BigInteger;
+        AddedValue: Boolean;
+        ErrorNodeEmpty: Label 'Node %1 from Structure %2 not must be empy!';
     begin
         JValue.SetValue(StructureMap."Value");
         case StructureMap."Data Type" of
             DataType::Code:
-                JObject.Add(StructureMap."Node Name", JValue.AsCode());
+                if JValue.AsCode() <> '' then
+                    AddedValue := JObject.Add(StructureMap."Node Name", JValue.AsCode());
             DataType::Biginteger:
-                JObject.Add(StructureMap."Node Name", JValue.AsBigInteger());
+                if JValue.AsBigInteger() > 0 then
+                    AddedValue := JObject.Add(StructureMap."Node Name", JValue.AsBigInteger());
             DataType::Integer:
-                JObject.Add(StructureMap."Node Name", JValue.AsInteger());
+                if JValue.AsInteger() > 0 then
+                    AddedValue := JObject.Add(StructureMap."Node Name", JValue.AsInteger());
             DataType::Decimal:
-                JObject.Add(StructureMap."Node Name", JValue.AsDecimal());
+                if JValue.AsDecimal() > 0 then
+                    AddedValue := JObject.Add(StructureMap."Node Name", JValue.AsDecimal());
             DataType::Boolean:
-                JObject.Add(StructureMap."Node Name", JValue.AsBoolean());
+                if JValue.AsBoolean() then
+                    AddedValue := JObject.Add(StructureMap."Node Name", JValue.AsBoolean());
             else
-                JObject.Add(StructureMap."Node Name", JValue.AsText());
+                if JValue.AsText() <> '' then
+                    AddedValue := JObject.Add(StructureMap."Node Name", JValue.AsText());
+
+                if not AddedValue then
+                    if StructureMap.Mondatory then
+                        Error(ErrorNodeEmpty, StructureMap."Node Name", StructureMap."Structure Code");
         end;
     end;
 }

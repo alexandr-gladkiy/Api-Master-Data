@@ -50,14 +50,6 @@ page 50004 "API MD Role Center"
                     RunObject = Page "API MD Setup Card";
                     RunPageMode = View;
                 }
-                action("Data Provider List")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Setup';
-                    RunObject = Page "API MD Data Provider List";
-                    RunPageMode = View;
-                    Visible = false;
-                }
             }
         }
     }

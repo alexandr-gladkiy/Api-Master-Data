@@ -37,8 +37,6 @@ codeunit 50015 "API Master Data"
     begin
         //TODO: Validate Subscriber by apiKey
 
-        Data := '"Data":{"items":[{"no": 1,"price": 10}{"no": 2,"price": 20}{"no": 3,"price": 30}]}';
-        exit;
         if not sStructure.SetByEndpoint(endpoint) then
             Error(ErrorEndpointNotFound, endpoint);
 

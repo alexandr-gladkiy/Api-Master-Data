@@ -29,6 +29,7 @@ table 50005 "API MD Structure Table Setup"
         field(4; "Base Table"; Boolean)
         {
             Caption = 'Base Table';
+            //TODO: Add validate - must bi onli one Base table setup for structure
         }
         field(5; "Trigger Insert"; Boolean)
         {
@@ -56,14 +57,14 @@ table 50005 "API MD Structure Table Setup"
         {
             Clustered = true;
         }
-        key(UK1; "Structure Code", "Table No.", "Base Table")
+        key(Key1; "Structure Code", "Table No.", "Base Table")
         {
-            Unique = true;
+
         }
     }
     fieldgroups
     {
-        fieldgroup(DropDown; "Table No.", "Table Name")
+        fieldgroup(DropDown; "Table Code", "Table No.", "Table Name")
         {
 
         }
