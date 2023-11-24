@@ -5,11 +5,12 @@ codeunit 50008 "API MD Structure Service"
 {
     var
         sCommon: Codeunit "API MD Common Service";
+        sStructureMap: Codeunit "API MD Structure Map Service";
+        sStructureTableSetup: Codeunit "API MD Struct Tbl Set. Service";
         mStructure: Codeunit "API MD Structure Management";
         GlobalStructure: Record "API MD Data Structure";
         HasStructure: Boolean;
         ErrorStructureIsNotSetup: Label 'Structure is not initialized. Use SetStructure function first.';
-
         GlobalStructureCode: Code[30];
         IsSetStructureCode: Boolean;
         GlobalStatusFilter: Enum "API MD Status";
@@ -33,6 +34,25 @@ codeunit 50008 "API MD Structure Service"
         exit(HasStructure);
     end;
     /// <summary>
+    /// SetByEndpoint.
+    /// </summary>
+    /// <param name="EndpointName">Text.</param>
+    /// <returns>Return value of type Boolean.</returns>
+    procedure SetByEndpoint(EndpointName: Text): Boolean
+    begin
+        if HasStructure and (GlobalStructure."Endpoint Name" = EndpointName) then
+            exit(true);
+
+        GlobalStructure.Reset();
+        GlobalStructure.SetCurrentKey("Endpoint Name");
+        GlobalStructure.SetRange("Endpoint Name", EndpointName);
+        if GlobalStructure.IsEmpty then
+            exit(false);
+
+        HasStructure := GlobalStructure.FindFirst();
+        exit(HasStructure);
+    end;
+    /// <summary>
     /// ClearStructure.
     /// </summary>
     procedure ClearStructure()
@@ -48,6 +68,16 @@ codeunit 50008 "API MD Structure Service"
         if not HasStructure then
             Error(ErrorStructureIsNotSetup);
         exit(GlobalStructure.Status = GlobalStructure.Status::Active);
+    end;
+    /// <summary>
+    /// GetCode.
+    /// </summary>
+    /// <returns>Return value of type Code[30].</returns>
+    procedure GetCode(): Code[30]
+    begin
+        if not HasStructure then
+            Error(ErrorStructureIsNotSetup);
+        exit(GlobalStructure.Code);
     end;
     /// <summary>
     /// GetName.

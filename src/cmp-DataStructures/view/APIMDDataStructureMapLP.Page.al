@@ -52,7 +52,6 @@ page 50008 "API MD Data Structure Map LP"
                 field("Table Setup Entry No."; Rec."Table Code")
                 {
                     ToolTip = 'Specifies the value of the Table Setup Entry No. field.';
-                    Visible = false;
                 }
                 field("Table No."; Rec."Table No.")
                 {
@@ -62,13 +61,14 @@ page 50008 "API MD Data Structure Map LP"
                 field("Table Name"; Rec."Table Setup Name")
                 {
                     ToolTip = 'Specifies the value of the Table Name field.';
+                    Visible = false;
                     trigger OnDrillDown()
                     var
                         NewTableCode: Code[30];
                     begin
                         Rec.TestField("Structure Code");
-                        sStructureMap.SetStructureCode(Rec."Structure Code");
-                        if sStructureTableSetup.LookupEntryNo(NewTableCode) then
+                        sStructureTableSetup.SetStructureCode(Rec."Structure Code");
+                        if sStructureTableSetup.LookupTableCode(NewTableCode) then
                             Rec.Validate("Table Code", NewTableCode);
                         Rec.CalcFields("Table No.", "Table Setup Name");
                     end;

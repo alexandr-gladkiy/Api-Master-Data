@@ -53,7 +53,7 @@ page 50010 "API MD Struct. Table Rel. List"
                         NewTableCode: Code[30];
                     begin
                         sStructureTableSetup.SetStructureCode(Rec."Structure Code");
-                        if sStructureTableSetup.LookupEntryNo(NewTableCode) then
+                        if sStructureTableSetup.LookupTableCode(NewTableCode) then
                             Rec.Validate("Source Table Code", NewTableCode);
                         Rec.CalcFields("Table No.", "Source Table Name");
                     end;
@@ -96,7 +96,7 @@ page 50010 "API MD Struct. Table Rel. List"
                         NewTableCode: Code[30];
                     begin
                         sStructureTableSetup.SetStructureCode(Rec."Structure Code");
-                        if sStructureTableSetup.LookupEntryNo(NewTableCode) then
+                        if sStructureTableSetup.LookupTableCode(NewTableCode) then
                             Rec.Validate("Relation Table Code", NewTableCode);
                         Rec.CalcFields("Relation Table No.", "Relation Table Name");
                     end;
